@@ -1,0 +1,141 @@
+.dashboard {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 260px minmax(500px, 1fr) 320px;
+  background: var(--background);
+}
+
+.pane {
+  border-right: 1px solid var(--border);
+  overflow: auto;
+  background: var(--panel);
+}
+
+.pane:last-child {
+  border-right: none;
+}
+
+.section {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.row {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.row input,
+.row textarea,
+.row select,
+.editor,
+.briefInput {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--foreground);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.row textarea,
+.briefInput {
+  min-height: 70px;
+}
+
+.button {
+  border: 1px solid var(--border);
+  background: #1f2f4f;
+  color: var(--foreground);
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.fileList {
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.fileButton {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--foreground);
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.fileButton:hover,
+.fileButtonActive {
+  border-color: var(--border);
+  background: var(--panel-soft);
+}
+
+.middlePane {
+  display: grid;
+  grid-template-rows: auto 180px minmax(280px, 1fr) auto;
+  background: #0f1728;
+}
+
+.editorGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.editor {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.chatList {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.chatItem {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--panel-soft);
+  white-space: pre-wrap;
+}
+
+.smallText {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 1fr 300px;
+  }
+
+  .pane:last-child {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+  }
+}
+
