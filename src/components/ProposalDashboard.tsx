@@ -44,7 +44,7 @@ export function ProposalDashboard() {
   const [pending, setPending] = useState(false);
 
   function pushChat(text: string) {
-    setChat((prev) => [{ id: `${Date.now()}-${Math.random()}`, text }, ...prev]);
+    setChat((prev) => [{ id: crypto.randomUUID(), text }, ...prev]);
   }
 
   const canUseGithub = useMemo(
