@@ -40,8 +40,12 @@ export function ProposalDashboard() {
   const [mergeDraft, setMergeDraft] = useState("");
   const [brief, setBrief] = useState("");
   const [projectId, setProjectId] = useState("");
-  const [chat, setChat] = useState<string[]>([]);
+  const [chat, setChat] = useState<Array<{ id: string; text: string }>>([]);
   const [pending, setPending] = useState(false);
+
+  function pushChat(text: string) {
+    setChat((prev) => [{ id: `${Date.now()}-${Math.random()}`, text }, ...prev]);
+  }
 
   const canUseGithub = useMemo(
     () => Boolean(credentials.owner && credentials.repo && credentials.githubToken),
@@ -113,7 +117,7 @@ export function ProposalDashboard() {
           message: `Update ${activeFile} on ${branch}`,
         }),
       });
-      setChat((prev) => [`Committed ${activeFile} to ${branch}`, ...prev]);
+      pushChat(`Committed ${activeFile} to ${branch}`);
     } finally {
       setPending(false);
     }
@@ -133,7 +137,7 @@ export function ProposalDashboard() {
       });
       const data = await response.json();
       setMergeDraft(data.merged ?? "");
-      setChat((prev) => ["Quality Manager prepared merge draft.", ...prev]);
+      pushChat("Quality Manager prepared merge draft.");
     } finally {
       setPending(false);
     }
@@ -165,14 +169,11 @@ export function ProposalDashboard() {
         body: JSON.stringify({
           projectId: selectedProjectId,
           brief,
-          overrides: [`${new Date().toISOString()}: ${brief}`],
+          overrides: [{ at: new Date().toISOString(), message: brief }],
         }),
       });
       const data = await response.json();
-      setChat((prev) => [
-        `Bid Manager created ${data.tasks?.length ?? 0} tasks and queued Technical/Project Managers.`,
-        ...prev,
-      ]);
+      pushChat(`Bid Manager created ${data.tasks?.length ?? 0} tasks and queued Technical/Project Managers.`);
     } finally {
       setPending(false);
     }
@@ -333,9 +334,9 @@ export function ProposalDashboard() {
         <div className={styles.section}>
           <div className={styles.title}>Chat Activity</div>
           <ul className={styles.chatList}>
-            {chat.map((entry, index) => (
-              <li key={`${entry}-${index}`} className={styles.chatItem}>
-                {entry}
+            {chat.map((entry) => (
+              <li key={entry.id} className={styles.chatItem}>
+                {entry.text}
               </li>
             ))}
           </ul>

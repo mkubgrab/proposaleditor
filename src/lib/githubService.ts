@@ -32,7 +32,11 @@ export class GitHubBranchService {
         ref: `heads/${branch}`,
       });
       return;
-    } catch {
+    } catch (error) {
+      const status = (error as { status?: number })?.status;
+      if (status && status !== 404) {
+        throw error;
+      }
       const base = await this.octokit.git.getRef({
         owner: this.owner,
         repo: this.repo,
@@ -93,7 +97,11 @@ export class GitHubBranchService {
     let sha: string | undefined;
     try {
       sha = (await this.getFile(input.path, input.branch)).sha;
-    } catch {
+    } catch (error) {
+      const status = (error as { status?: number })?.status;
+      if (status && status !== 404) {
+        throw error;
+      }
       sha = undefined;
     }
 

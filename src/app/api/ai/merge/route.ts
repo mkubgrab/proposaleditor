@@ -56,7 +56,9 @@ export async function POST(request: NextRequest) {
       throw new Error("Model did not return merged text");
     }
     return NextResponse.json({ merged });
-  } catch {
+  } catch (error) {
+    const safeMessage = error instanceof Error ? error.message : "unknown error";
+    console.error("AI merge request failed:", safeMessage);
     return NextResponse.json({
       merged:
         `${userVersion}\n\n---\n\n${agentVersion}`.trim() ||
@@ -65,4 +67,3 @@ export async function POST(request: NextRequest) {
     });
   }
 }
-
